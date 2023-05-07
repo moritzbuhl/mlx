@@ -121,7 +121,8 @@ struct mlx_query_fw {
 	uint16_t	fw_rev_subminor;
 	uint16_t	fw_rev_minor;
 
-	uint16_t	reserved1;
+	uint8_t		fw_ppf_id;
+	uint8_t		reserved1;
 	uint16_t	cmd_interface_rev;
 
 	uint8_t		debug_trace;
