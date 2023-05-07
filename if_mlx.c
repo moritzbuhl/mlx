@@ -402,7 +402,8 @@ mlx_fw_setup(struct mlxc_softc *sc)
 		    MLX_FWAREA_CHUNK);
 		if (sc->sc_fw_areas[i] == NULL) {
 			printf(", unable to allocate fw chunk %d\n", i);
-			goto free_areas;
+			nareas = i;
+			goto free_chunks;
 		}
 
 		dva = MLX_DMA_DVA(sc->sc_fw_areas[i]);
