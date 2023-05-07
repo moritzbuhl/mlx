@@ -325,7 +325,8 @@ struct mlx_init_hca {
 	uint32_t	reserved2[2];		// 1 2
 
 	uint16_t	hca_core_clock;
-	uint16_t	reserved3;		// 3
+	uint8_t		cacheline_sz;
+	uint8_t		reserved3;		// 3
 
 	uint32_t	router;			// 4
 
