@@ -388,7 +388,7 @@ mlx_fw_setup(struct mlxc_softc *sc)
 		return 1;
 	}
 
-	sc->sc_fw_areas = malloc(nareas * sizeof(struct mlx_dmamem *),
+	sc->sc_fw_areas = mallocarray(nareas, sizeof(struct mlx_dmamem *),
 	    M_DEVBUF, M_NOWAIT | M_ZERO);
 	if (sc->sc_fw_areas == NULL) {
 		printf(", unable to allocate fw areas\n");
