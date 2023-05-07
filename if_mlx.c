@@ -1226,7 +1226,7 @@ mlx_attach(struct device *parent, struct device *self, void *aux)
 	ifp->if_watchdog = mlx_watchdog;
 	ifp->if_hardmtu = betoh32(maa->maa_port_cap->mtus) & 0xffff;
 	strlcpy(ifp->if_xname, DEVNAME(sc), IFNAMSIZ);
-	IFQ_SET_MAXLEN(&ifp->if_snd, 1);
+	ifq_set_maxlen(&ifp->if_snd, 1);
 
 	/* not yet
 	ifp->if_capabilities = IFCAP_VLAN_MTU;
@@ -1376,7 +1376,7 @@ mlx_start(struct ifqueue *ifq)
 	struct mlx_softc *sc = ifp->if_softc;
 	struct mlx_qp *qp = &sc->sc_qp;
 	u_int idx, cons, prod;
-	u_int free, used;
+	u_int free, used = 0;
 	struct mbuf *m;
 	struct mlx_slot *ms;
 
@@ -1671,9 +1671,9 @@ mlx_up(struct mlx_softc *sc)
 	struct mlxc_softc *csc = sc->sc_mlxc;
 	struct mlx_set_port_rqp *port_rqp;
 	struct mlx_set_port_gen *port_gen;
-	int i, cq, uar, dbn, qpn, rv;
+	int i, cq, uar, dbn, qpn, rv = 0;
 	uint64_t *mactable;
-	uint64_t mac;
+	uint64_t mac = 0;
 
 	cq = csc->sc_first_cq + (sc->sc_port * MLX_CQS_PER_PORT);
 	uar = csc->sc_first_uar + sc->sc_port;
@@ -1995,7 +1995,7 @@ mlx_buf_fill(struct mlx_softc *sc, struct mlx_slot *ms)
 	struct mbuf *m;
 	int rv;
 
-	m = MCLGETI(NULL, M_DONTWAIT, NULL, MCLBYTES);
+	m = MCLGETL(NULL, M_DONTWAIT, MCLBYTES);
 	if (m == NULL)
 		return ENOMEM;
 
