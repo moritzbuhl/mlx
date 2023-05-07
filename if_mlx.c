@@ -241,13 +241,13 @@ struct mlx_attach_args {
 
 #define DEVNAME(_sc) ((_sc)->sc_dev.dv_xname)
 
-int	mlxc_match(struct device *, void *, void *);
-void	mlxc_attach(struct device *, struct device *, void *);
+static int	mlxc_match(struct device *, void *, void *);
+static void	mlxc_attach(struct device *, struct device *, void *);
 int	mlxc_detach(struct device *, int);
 int	mlxc_print(void *, const char *);
 
-int	mlx_match(struct device *, void *, void *);
-void	mlx_attach(struct device *, struct device *, void *);
+static int	mlx_match(struct device *, void *, void *);
+static void	mlx_attach(struct device *, struct device *, void *);
 int	mlx_detach(struct device *, int);
 
 int	mlx_media_change(struct ifnet *);
@@ -323,7 +323,7 @@ static const struct pci_matchid mlx_devices[] = {
 	{ PCI_VENDOR_MELLANOX,	PCI_PRODUCT_MELLANOX_CONNECTX3_EN }
 };
 
-int
+static int
 mlxc_match(struct device *parent, void *match, void *aux)
 {
 	return (pci_matchbyid(aux, mlx_devices, nitems(mlx_devices)));
@@ -1041,7 +1041,7 @@ mlx_reset(struct mlxc_softc *sc)
 	return 0;
 }
 
-void
+static void
 mlxc_attach(struct device *parent, struct device *self, void *aux)
 {
 	struct mlxc_softc		*sc = (struct mlxc_softc *)self;
@@ -1186,13 +1186,14 @@ mlxc_detach(struct device *self, int flags)
 	return rv;
 }
 
-int
+static int
 mlx_match(struct device *parent, void *match, void *aux)
 {
 	return 1;
 }
 
-void
+
+static void
 mlx_attach(struct device *parent, struct device *self, void *aux)
 {
 	struct mlxc_softc 		*csc;
