@@ -279,6 +279,7 @@ void	mlx_process_rx_cq(struct mlx_softc *);
 struct mlx_dmamem *mlx_dmamem_alloc(struct mlxc_softc *, size_t, size_t);
 void	mlx_dmamem_free(struct mlxc_softc *, struct mlx_dmamem *);
 int	mlx_fw_setup(struct mlxc_softc *);
+int	mlx_mod_stat_cfg(struct mlxc_softc *);
 int	mlx_get_device_info(struct mlxc_softc *);
 int	mlx_allocate_icm(struct mlxc_softc *);
 int	mlx_init_hca(struct mlxc_softc *);
@@ -433,6 +434,25 @@ free_chunks:
 free_areas:
 	free(sc->sc_fw_areas, M_DEVBUF, nareas * sizeof(struct mlx_dmamem *));
 	return 1;
+}
+
+int
+mlx_mod_stat_cfg(struct mlxc_softc *sc)
+{
+	struct mlx_mod_stat_cfg		*mod_stat_cfg;
+
+	mod_stat_cfg = (struct mlx_mod_stat_cfg *)MLX_DMA_KVA(sc->sc_mbox);
+	memset(mod_stat_cfg, 0, MLX_MBOX_SIZE);
+
+	mod_stat_cfg->pg_sz_m = 1;
+	mod_stat_cfg->pg_sz = 0;
+
+	if (mlx_mbox_in(sc, 0, 0, MLX_CMD_MOD_STAT_CFG, 100) != 0) {
+		printf(": MOD_STAT_CFG failed\n");
+		return 1;
+	}
+
+	return 0;
 }
 
 int
@@ -1062,7 +1082,8 @@ mlxc_attach(struct device *parent, struct device *self, void *aux)
 	if (mlx_fw_setup(sc) != 0)
 		goto unmap_uar;
 
-	/* mod_stat_cfg? */
+	if (mlx_mod_stat_cfg(sc) != 0)
+		goto unmap_uar;
 
 	/* get device info, port types */
 	if (mlx_get_device_info(sc) != 0) {

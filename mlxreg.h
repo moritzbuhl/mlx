@@ -91,6 +91,7 @@
 #define MLX_CMD_QUERY_QP	0x022
 #define MLX_CMD_CONF_SPECIAL_QP	0x023
 #define MLX_CMD_NOP		0x031
+#define MLX_CMD_MOD_STAT_CFG	0x034
 #define MLX_CMD_SW2HW_SRQ	0x035
 #define MLX_CMD_QUERY_PORT	0x043
 #define MLX_CMD_SET_MCAST_FILTER 0x048
@@ -163,6 +164,13 @@ struct mlx_map_mem {
 	uint32_t	va_l;
 	uint32_t	pa_h;
 	uint32_t	pa_l_size;
+} __packed;
+
+struct mlx_mod_stat_cfg {
+	uint16_t	reserved1;
+	uint8_t		pg_sz_m;
+	uint8_t		pg_sz;
+	uint32_t	reserved2[63];
 } __packed;
 
 struct mlx_query_dev_cap {
