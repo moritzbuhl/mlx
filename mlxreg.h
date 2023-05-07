@@ -314,7 +314,7 @@ struct mlx_init_hca {
 	uint8_t		version;
 	uint8_t		reserved1[3];		// 0
 
-	uint32_t	reserved2[2];		// 1
+	uint32_t	reserved2[2];		// 1 2
 
 	uint16_t	hca_core_clock;
 	uint16_t	reserved3;		// 3
