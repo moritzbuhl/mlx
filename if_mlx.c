@@ -431,7 +431,6 @@ free_chunks:
 	for (i = 0; i < nareas; i++) {
 		mlx_dmamem_free(sc, sc->sc_fw_areas[i]);
 	}
-free_areas:
 	free(sc->sc_fw_areas, M_DEVBUF, nareas * sizeof(struct mlx_dmamem *));
 	return 1;
 }
