@@ -714,6 +714,8 @@ mlx_allocate_icm(struct mlxc_softc *sc)
 		map_mem->pa_h = htobe32((dva + icm_addr) >> 32);
 		map_mem->pa_l_size = htobe32(((dva + icm_addr) & 0xFFFFF000UL)
 		    | (MLX_FWAREA_CHUNK_SHIFT - MLX_PAGE_SHIFT));
+
+		// XXX: CMD_MAP_ICM_AUX is not in a loop in linux!
 		if (mlx_mbox_in(sc, 1, 0, MLX_CMD_MAP_ICM_AUX, 100) != 0) {
 			printf(": unable to map icm aux\n");
 			goto free_icm_aux;
