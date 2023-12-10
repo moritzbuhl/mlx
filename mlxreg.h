@@ -199,7 +199,7 @@ struct mlx_query_dev_cap {
 	uint8_t		log_rsvd_mtts;
 	uint8_t		log_max_mrw_sz;
 	uint8_t		log_rsvd_mrws;
-	uint8_t		log_max_mtts;			// 8
+	uint8_t		log_max_mtt_seg;		// 8
 
 	uint16_t	reserved4;
 	uint16_t	num_sys_eqs_max_av;		// 9

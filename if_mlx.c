@@ -471,33 +471,33 @@ mlx_get_device_info(struct mlxc_softc *sc)
 	printf(" cap flags_ext %x, cap flags %x\n", sc->sc_dev_cap.flags_ext,
 	    sc->sc_dev_cap.flags);
 	printf("min page size %d, uar size %d, %d rsvd uars\n",
-	    (1 << betoh16(sc->sc_dev_cap.log_pg_sz)),
+	    (1 << sc->sc_dev_cap.log_pg_sz),
 	    (1 << ((sc->sc_dev_cap.log_uar_sz & 0x3f) + 20)),
 	    sc->sc_dev_cap.rsvd_uar >> 4);
-	printf("pd: max %d, rsvd %d\n", (1 << sc->sc_dev_cap.log_max_pd),
+	printf("pd: max %d, rsvd %d\n", (1 << (sc->sc_dev_cap.log_max_pd & 0x3f)),
 	    sc->sc_dev_cap.num_rsvd_pds >> 4);
 	printf("mpt: cmpt size %d, dmpt size %d, %d rsvd mrws\n",
 	    betoh16(sc->sc_dev_cap.c_mpt_entry_sz),
 	    betoh16(sc->sc_dev_cap.d_mpt_entry_sz),
-	    1 << sc->sc_dev_cap.log_rsvd_mrws);
+	    1 << (sc->sc_dev_cap.log_rsvd_mrws & 0xf));
 	printf("qp: max %d, rsvd %d, size %d, entry size %d\n",
-	    (1 << sc->sc_dev_cap.log_max_qp),
-	    (1 << sc->sc_dev_cap.log_rsvd_qp),
+	    (1 << (sc->sc_dev_cap.log_max_qp & 0xf)),
+	    (1 << (sc->sc_dev_cap.log_rsvd_qp & 0xf)),
 	    (1 << sc->sc_dev_cap.log_max_qp_sz),
 	    betoh16(sc->sc_dev_cap.qpc_entry_sz));
-	printf("srq: max %d, rsvd %d\n", (1 << sc->sc_dev_cap.log_max_srqs),
-	    (1 << sc->sc_dev_cap.log_rsvd_srqs));
+	printf("srq: max %d, rsvd %d\n", (1 << (sc->sc_dev_cap.log_max_srqs & 0x1f)),
+	    (1 << (sc->sc_dev_cap.log_rsvd_srqs >> 4)));
 	printf("cq: max %d, rsvd %d, size %d, entry size %d\n",
-	    (1 << sc->sc_dev_cap.log_max_cqs),
-	    (1 << sc->sc_dev_cap.log_rsvd_cqs),
+	    (1 << (sc->sc_dev_cap.log_max_cqs & 0x1f)),
+	    (1 << (sc->sc_dev_cap.log_rsvd_cqs & 0xf)),
 	    (1 << sc->sc_dev_cap.log_max_cq_sz),
 	    betoh16(sc->sc_dev_cap.cqc_entry_sz));
 	printf("eq: max %d, rsvd %d, entry size %d\n",
-	    (1 << sc->sc_dev_cap.log_max_eqs),
-	    (1 << sc->sc_dev_cap.log_rsvd_eqs),
+	    (1 << (sc->sc_dev_cap.log_max_eqs & 0xf)),
+	    (1 << (sc->sc_dev_cap.log_rsvd_eqs & 0xf)),
 	    betoh16(sc->sc_dev_cap.eqc_entry_sz));
 	printf("mtt: max %d, rsvd %d, entry size %d\n",
-	    (1 << sc->sc_dev_cap.log_max_mtts),
+	    (1 << sc->sc_dev_cap.log_max_mtt_seg),
 	    (1 << (sc->sc_dev_cap.log_rsvd_mtts >> 4)),
 	    betoh16(sc->sc_dev_cap.mtt_entry_sz));
 	printf("send queue: max entry size %d, sgl size %d\n",
