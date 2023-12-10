@@ -535,14 +535,14 @@ mlx_allocate_icm(struct mlxc_softc *sc)
 	uint64_t 			dva;
 	char				*other_ptr;
 
-	sc->sc_qpcs = alloc_count(sc->sc_dev_cap.log_rsvd_qp, MLX_ALLOC_QPS +
+	sc->sc_qpcs = alloc_count(sc->sc_dev_cap.log_rsvd_qp & 0xf, MLX_ALLOC_QPS +
 	    MLX_SPECIAL_QPS);
-	sc->sc_srqs = alloc_count(sc->sc_dev_cap.log_rsvd_srqs, 0);
-	sc->sc_cqcs = alloc_count(sc->sc_dev_cap.log_rsvd_cqs, MLX_ALLOC_CQS);
-	sc->sc_eqcs = alloc_count(sc->sc_dev_cap.log_rsvd_eqs, MLX_ALLOC_EQS);
+	sc->sc_srqs = alloc_count(sc->sc_dev_cap.log_rsvd_srqs >> 4, 0);
+	sc->sc_cqcs = alloc_count(sc->sc_dev_cap.log_rsvd_cqs & 0xf, MLX_ALLOC_CQS);
+	sc->sc_eqcs = alloc_count(sc->sc_dev_cap.log_rsvd_eqs & 0xf, MLX_ALLOC_EQS);
 	sc->sc_mtts = alloc_count(sc->sc_dev_cap.log_rsvd_mtts >> 4,
 	    MLX_ALLOC_MTTS);
-	sc->sc_mpts = alloc_count(sc->sc_dev_cap.log_rsvd_mrws,
+	sc->sc_mpts = alloc_count(sc->sc_dev_cap.log_rsvd_mrws & 0xf,
 	    MLX_ALLOC_MPTS);
 	sc->sc_mcs = fls(MLX_ALLOC_MCS - 1);
 
@@ -875,7 +875,7 @@ mlx_setup_mpt(struct mlxc_softc *sc)
 	int mpt_num;
 
 	sc->sc_pd = sc->sc_dev_cap.num_rsvd_pds >> 4;
-	mpt_num = (1 << sc->sc_dev_cap.log_rsvd_mrws);
+	mpt_num = (1 << (sc->sc_dev_cap.log_rsvd_mrws & 0xf));
 	sc->sc_mpt = mpt_num /*| 0x77000000UL*/;
 	sc->sc_mpt_key = (sc->sc_mpt >> 24) | (sc->sc_mpt << 8);
 
@@ -909,7 +909,7 @@ mlx_prepare(struct mlxc_softc *sc)
 
 	/* event queue */
 	uars = sc->sc_dev_cap.rsvd_uar >> 4;
-	sc->sc_eqc_num = MAX(uars, 1 << sc->sc_dev_cap.log_rsvd_eqs);
+	sc->sc_eqc_num = MAX(uars, 1 << (sc->sc_dev_cap.log_rsvd_eqs & 0xf));
 	sc->sc_eqc_db =
 	    (MLX_PAGE_SIZE * (sc->sc_eqc_num / MLX_EQS_PER_UAR)) +
 	    MLX_EQ_UAR_OFFSET +
@@ -961,7 +961,7 @@ mlx_prepare(struct mlxc_softc *sc)
 	    sc->sc_eqc_db, htobe32(1 << 31));
 
 	/* special queue pairs */
-	special_qps = roundup((1 << sc->sc_dev_cap.log_rsvd_qp),
+	special_qps = roundup((1 << (sc->sc_dev_cap.log_rsvd_qp & 0xf)),
 	    MLX_SPECIAL_QPS);
 	sc->sc_first_qp = special_qps + MLX_SPECIAL_QPS;
 	if (mlx_cmd_imm(sc, special_qps, 0, MLX_CMD_CONF_SPECIAL_QP, 100, 0,
@@ -970,7 +970,7 @@ mlx_prepare(struct mlxc_softc *sc)
 		return 1;
 	}
 
-	sc->sc_first_cq = (1 << sc->sc_dev_cap.log_rsvd_cqs);
+	sc->sc_first_cq = (1 << (sc->sc_dev_cap.log_rsvd_cqs & 0xf));
 
 	/* allocate memory for cq doorbells */
 	sc->sc_doorbells = mlx_dmamem_alloc(sc, MLX_MAX_PORTS *
