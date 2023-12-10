@@ -181,17 +181,18 @@ struct mlx_query_dev_cap {
 	uint8_t		log_rsvd_qp;
 	uint8_t		log_max_qp;			// 4
 
-	uint16_t	log_srqs;
-	uint8_t		num_rsvd_scqs;
-	uint8_t		log_max_scqs;			// 5
+	uint8_t		log_rsvd_srqs;
+	uint8_t		log_max_srqs;
+	uint8_t		log_rsvd_eecs;
+	uint8_t		log_max_eecs;			// 5
 
-	uint8_t		num_rsvd_eqs;
+	uint8_t		reserved2;
 	uint8_t		log_max_cq_sz;
 	uint8_t		log_rsvd_cqs;
 	uint8_t		log_max_cqs;			// 6
 
-	uint8_t		log_max_eq_sz;
-	uint8_t		log_max_d_mpts;
+	uint8_t		reserved3;
+	uint8_t		log_max_mpts;
 	uint8_t		log_rsvd_eqs;
 	uint8_t		log_max_eqs;			// 7
 
@@ -200,64 +201,89 @@ struct mlx_query_dev_cap {
 	uint8_t		log_rsvd_mrws;
 	uint8_t		log_max_mtts;			// 8
 
-	uint32_t	reserved2;			// 9
+	uint16_t	reserved4;
+	uint16_t	num_sys_eqs_max_av;		// 9
 
-	uint16_t	log_max_ra_req_qp;
-	uint16_t	log_max_ra_res_qp;		// 10
+	uint8_t		reserved5;
+	uint8_t		log_max_ra_req_qp;
+	uint8_t		reserved6;
+	uint8_t		log_max_ra_res_qp;		// 10
 
-	uint32_t	log_max_ra_res_global;		// 11
+	uint8_t		reserved7;
+	uint8_t		log_max_gso_sz;
+	uint8_t		rss_flags;
+	uint8_t		log_max_rdma;			// 11
 
-	uint32_t	rsz_srq;			// 12
+	uint8_t		reserved8[3];
+	uint8_t		rsz_srq;			// 12
 
-	uint16_t	port_flags;
-	uint8_t		pci_pf_num;
-	uint8_t		num_ports;			// 13
+	uint8_t		port_flags;
+	uint8_t		ack_delay;
+	uint8_t		mtu_max_port_width;
+	uint8_t		vl_num_ports;			// 13
 
-	uint8_t		log_max_msg;
-	uint8_t		log_drain_size;
-	uint8_t		log_ethtype;
+	uint8_t		log_max_msg_sz;
+	uint16_t	reserved9;
 	uint8_t		log_max_gid;			// 14
 
 	uint16_t	stat_rate_support;
-	uint16_t	log_max_pkey;			// 15
+	uint8_t		cq_ts_flags;
+	uint8_t		log_max_pkey;			// 15
 
-	uint32_t	flags;				// 16
-	uint32_t	flags2;				// 17
+	uint32_t	flags_ext;			// 16
+	uint32_t	flags;				// 17
 
-	uint16_t	uar_sz_rsvd;
-	uint8_t		reserved3;
+	uint8_t		rsvd_uar;
+	uint8_t		log_uar_sz;
+	uint8_t		reserved10;
 	uint8_t		log_pg_sz;			// 18
 
-	uint16_t	log_bf_reg_size;
+	uint8_t		bf_flag;
+	uint8_t		log_bf_reg_sz;
 	uint8_t		log_max_bf_regs_per_page;
 	uint8_t		log_max_bf_pages;		// 19
 
-	uint8_t		reserved4;
+	uint8_t		reserved11;
 	uint8_t		max_sg_sq;
 	uint16_t	max_desc_sz_sq;			// 20
 
-	uint16_t	max_sg_rq;
+	uint8_t		reserved12;
+	uint8_t		max_sg_rq;
 	uint16_t	max_desc_sz_rq;			// 21
 
-	uint8_t		fexch_base_qp;
-	uint16_t	fcp_ud_base;
-	uint8_t		fexch_base_mpt;			// 22
+	uint32_t	reserved13;			// 22
 
-	uint32_t	reserved5;			// 23
+	uint8_t		reserved14;
+	uint8_t		svlan_by_qp;
+	uint16_t	reserved15;			// 23
 
-	uint8_t		reserved6;
-	uint8_t		log_max_qp_mcg;
+	uint8_t		reserved16;
+	uint8_t		log_max_qp_mcgs;
 	uint8_t		num_rsvd_mcgs;
-	uint8_t		log_max_mcg;			// 24
+	uint8_t		log_max_mcgs;			// 24
 
 	uint8_t		num_rsvd_pds;
 	uint8_t		log_max_pd;
-	uint8_t		num_rsvd_srcds;
-	uint8_t		log_max_srcds;			// 25
+	uint8_t		num_rsvd_xrcs;
+	uint8_t		log_max_xrcs;			// 25
 
-	uint32_t	reserved7[6];			// 26 27 28 29 30 31
+	uint32_t	reserved17[2];			// 26 27
 
-	uint16_t	rdmadc_entry_sz;
+	uint32_t	flags_ext2;			// 28
+
+	uint8_t		ipoib_fs_flag;
+	uint8_t		reserved18;
+	uint8_t		log_max_qp_range_sz;
+	uint8_t		num_max_qp_per_entry;		// 29
+
+	uint8_t		sl2vl_flag;
+	uint8_t		reserved19;
+	uint8_t		vf_qos_cq_eq_flag;
+	uint8_t		ecn_qcn_flag;			// 30
+
+	uint32_t	reserved20;			// 31
+
+	uint16_t	rdmarc_entry_sz;
 	uint16_t	qpc_entry_sz;			// 32
 
 	uint16_t	aux_entry_sz;
@@ -272,16 +298,28 @@ struct mlx_query_dev_cap {
 	uint16_t	mtt_entry_sz;
 	uint16_t	d_mpt_entry_sz;			// 36
 
-	uint32_t	flags3;				// 37
+	uint32_t	flags2;				// 37
 
-	uint32_t	resd_lkey;			// 38
+	uint32_t	rsvd_lkey;			// 38
 
-	uint32_t	reserved8;			// 39
+	uint32_t	flags3;				// 39
 
 	uint32_t	max_icm_size_h;			// 40
 	uint32_t	max_icm_size_l;			// 41
 
-	uint32_t	reserved9[22];
+	uint32_t	dmfs_hr_qpn_base;		// 42
+	uint32_t	dmfs_hr_qpn_range;		// 43
+	uint32_t	mad_demux_flag;			// 44
+	uint32_t	reserved21[4];			// 45 - 48
+
+	uint8_t		reserved22;
+	uint8_t		user_clock_flag;
+	uint16_t	reserved23;			// 49
+	uint32_t	qp_rl_num;			// 50
+	uint32_t	qp_rl_max;			// 51
+	uint32_t	qp_rl_min;			// 52
+
+	uint32_t	reserved24[11];			// 53 - 63
 } __packed;
 
 #define MLX_PORT_CAP_IB		(1 << 24)
@@ -332,7 +370,8 @@ struct mlx_init_hca {
 
 	uint32_t	flags;			// 5
 
-	uint32_t	reserved4[2];		// 6 7
+	uint32_t	recoverable_err_ev;	// 6 7
+	uint32_t	reserved4;		// 6 7
 
 	/* qpcbaseaddr */
 	uint32_t	qreserved1[4];		// 8 9 10 11
@@ -413,9 +452,9 @@ struct mlx_init_hca {
 	uint8_t		log_max_uars;
 	uint8_t		uar_page_sz;		// 74
 
-	uint32_t	ureserved3[5];		// 75
+	uint32_t	ureserved3[5];		// 75 - 79
 
-	uint32_t	reserved8[48];
+	uint32_t	reserved8[48];		// 80 - 127
 } __packed;
 
 struct mlx_init_port {

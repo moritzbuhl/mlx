@@ -467,13 +467,13 @@ mlx_get_device_info(struct mlxc_softc *sc)
 
 	memcpy(&sc->sc_dev_cap, buf, sizeof(sc->sc_dev_cap));
 
-	printf(" %d ports\n", sc->sc_dev_cap.num_ports);
-	printf(" cap flags %x, cap flags2 %x\n", sc->sc_dev_cap.flags,
-	    sc->sc_dev_cap.flags2);
+	printf(" %d ports\n", sc->sc_dev_cap.mtu_max_port_width & 0xf);
+	printf(" cap flags_ext %x, cap flags %x\n", sc->sc_dev_cap.flags_ext,
+	    sc->sc_dev_cap.flags);
 	printf("min page size %d, uar size %d, %d rsvd uars\n",
 	    (1 << betoh16(sc->sc_dev_cap.log_pg_sz)),
-	    (1 << ((betoh16(sc->sc_dev_cap.uar_sz_rsvd) & 0x3f) + 20)),
-	    (betoh16(sc->sc_dev_cap.uar_sz_rsvd) & 0xf000) >> 12);
+	    (1 << ((sc->sc_dev_cap.log_uar_sz & 0x3f) + 20)),
+	    sc->sc_dev_cap.rsvd_uar >> 4);
 	printf("pd: max %d, rsvd %d\n", (1 << sc->sc_dev_cap.log_max_pd),
 	    sc->sc_dev_cap.num_rsvd_pds >> 4);
 	printf("mpt: cmpt size %d, dmpt size %d, %d rsvd mrws\n",
@@ -485,17 +485,16 @@ mlx_get_device_info(struct mlxc_softc *sc)
 	    (1 << sc->sc_dev_cap.log_rsvd_qp),
 	    (1 << sc->sc_dev_cap.log_max_qp_sz),
 	    betoh16(sc->sc_dev_cap.qpc_entry_sz));
-	printf("scq: max %d, rsvd %d\n", (1 << sc->sc_dev_cap.log_max_scqs),
-	    (1 << sc->sc_dev_cap.num_rsvd_scqs));
+	printf("srq: max %d, rsvd %d\n", (1 << sc->sc_dev_cap.log_max_srqs),
+	    (1 << sc->sc_dev_cap.log_rsvd_srqs));
 	printf("cq: max %d, rsvd %d, size %d, entry size %d\n",
 	    (1 << sc->sc_dev_cap.log_max_cqs),
 	    (1 << sc->sc_dev_cap.log_rsvd_cqs),
 	    (1 << sc->sc_dev_cap.log_max_cq_sz),
 	    betoh16(sc->sc_dev_cap.cqc_entry_sz));
-	printf("eq: max %d, rsvd %d, size %d, entry size %d\n",
+	printf("eq: max %d, rsvd %d, entry size %d\n",
 	    (1 << sc->sc_dev_cap.log_max_eqs),
 	    (1 << sc->sc_dev_cap.log_rsvd_eqs),
-	    (1 << sc->sc_dev_cap.log_max_eq_sz),
 	    betoh16(sc->sc_dev_cap.eqc_entry_sz));
 	printf("mtt: max %d, rsvd %d, entry size %d\n",
 	    (1 << sc->sc_dev_cap.log_max_mtts),
@@ -538,12 +537,8 @@ mlx_allocate_icm(struct mlxc_softc *sc)
 
 	sc->sc_qpcs = alloc_count(sc->sc_dev_cap.log_rsvd_qp, MLX_ALLOC_QPS +
 	    MLX_SPECIAL_QPS);
-	sc->sc_srqs = alloc_count((betoh16(sc->sc_dev_cap.log_srqs) & 0xf000)
-	    >> 12, 0);
+	sc->sc_srqs = alloc_count(sc->sc_dev_cap.log_rsvd_srqs, 0);
 	sc->sc_cqcs = alloc_count(sc->sc_dev_cap.log_rsvd_cqs, MLX_ALLOC_CQS);
-	if (sc->sc_dev_cap.num_rsvd_eqs == 0)
-		sc->sc_dev_cap.num_rsvd_eqs =
-		    (1 << sc->sc_dev_cap.log_rsvd_eqs);
 	sc->sc_eqcs = alloc_count(sc->sc_dev_cap.log_rsvd_eqs, MLX_ALLOC_EQS);
 	sc->sc_mtts = alloc_count(sc->sc_dev_cap.log_rsvd_mtts >> 4,
 	    MLX_ALLOC_MTTS);
@@ -714,8 +709,6 @@ mlx_allocate_icm(struct mlxc_softc *sc)
 		map_mem->pa_h = htobe32((dva + icm_addr) >> 32);
 		map_mem->pa_l_size = htobe32(((dva + icm_addr) & 0xFFFFF000UL)
 		    | (MLX_FWAREA_CHUNK_SHIFT - MLX_PAGE_SHIFT));
-
-		// XXX: CMD_MAP_ICM_AUX is not in a loop in linux!
 		if (mlx_mbox_in(sc, 1, 0, MLX_CMD_MAP_ICM_AUX, 100) != 0) {
 			printf(": unable to map icm aux\n");
 			goto free_icm_aux;
@@ -795,9 +788,7 @@ mlx_init_hca(struct mlxc_softc *sc)
 	init->log_max_uars = fls(MLX_ALLOC_UARS - 1);;
 	init->uar_page_sz = PAGE_SHIFT - MLX_PAGE_SHIFT;
 
-	sc->sc_first_uar = MAX((betoh16(sc->sc_dev_cap.uar_sz_rsvd) & 0xf000)
-	    >> 12,
-	    MLX_EQ_UARS);
+	sc->sc_first_uar = MAX(sc->sc_dev_cap.rsvd_uar >> 4, MLX_EQ_UARS);
 
 	init->qpc_base_addr_hi = htobe32(sc->sc_qpc_addr >> 32);
 	init->qpc_base_addr_lo_count = htobe32((sc->sc_qpc_addr & 0xFFFFFFC0UL)
@@ -834,7 +825,7 @@ mlx_init_hca(struct mlxc_softc *sc)
 	init->mtt_base_addr_hi = htobe32(sc->sc_mtt_addr >> 32);
 	init->mtt_base_addr_lo = htobe32(sc->sc_mtt_addr & 0xFFFFFFFFUL);
 
-	return mlx_mbox_in(sc, 0, 0, MLX_CMD_INIT_HCA, 100);
+	return mlx_mbox_in(sc, 0, 0, MLX_CMD_INIT_HCA, 10000);
 }
 
 int
@@ -917,8 +908,8 @@ mlx_prepare(struct mlxc_softc *sc)
 	int uars, special_qps;
 
 	/* event queue */
-	uars = (betoh16(sc->sc_dev_cap.uar_sz_rsvd) & 0xf000) >> 12;
-	sc->sc_eqc_num = MAX(uars, sc->sc_dev_cap.num_rsvd_eqs);
+	uars = sc->sc_dev_cap.rsvd_uar >> 4;
+	sc->sc_eqc_num = MAX(uars, 1 << sc->sc_dev_cap.log_rsvd_eqs);
 	sc->sc_eqc_db =
 	    (MLX_PAGE_SIZE * (sc->sc_eqc_num / MLX_EQS_PER_UAR)) +
 	    MLX_EQ_UAR_OFFSET +
@@ -1078,13 +1069,19 @@ mlxc_attach(struct device *parent, struct device *self, void *aux)
 	}
 
 	if (mlx_reset(sc) != 0)
+{ printf("reset failed\n");
 		goto unmap_uar;
+}
 
 	if (mlx_fw_setup(sc) != 0)
+{ printf("fw_setup failed\n");
 		goto unmap_uar;
+}
 
 	if (mlx_mod_stat_cfg(sc) != 0)
+{ printf("mlx_mod_stat_cfg failed\n");
 		goto unmap_uar;
+}
 
 	/* get device info, port types */
 	if (mlx_get_device_info(sc) != 0) {
@@ -1093,13 +1090,19 @@ mlxc_attach(struct device *parent, struct device *self, void *aux)
 	}
 
 	if (mlx_allocate_icm(sc) != 0)
+{ printf("allocate_icm failed\n");
 		goto unmap_uar;
+}
 
 	if (mlx_init_hca(sc) != 0)
+{ printf("init_hca failed\n");
 		goto free_icm;
+}
 
 	if (mlx_setup_mpt(sc) != 0)
+{ printf("setup_mpt failed\n");
 		goto free_icm;
+}
 
 	if (mlx_prepare(sc) != 0)
 		goto free_icm;
@@ -1121,7 +1124,7 @@ mlxc_attach(struct device *parent, struct device *self, void *aux)
 
 	config_mountroot(&sc->sc_dev, mlx_nop);
 
-	sc->sc_nports = MIN(sc->sc_dev_cap.num_ports, MLX_MAX_PORTS);
+	sc->sc_nports = MIN(sc->sc_dev_cap.mtu_max_port_width & 0xf, MLX_MAX_PORTS);
 
 	found = 0;
 	for (i = 0; i < sc->sc_nports; i++) {
