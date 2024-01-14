@@ -1230,7 +1230,7 @@ mlx_attach(struct device *parent, struct device *self, void *aux)
 	ifp->if_watchdog = mlx_watchdog;
 	ifp->if_hardmtu = betoh32(maa->maa_port_cap->mtus) & 0xffff;
 	strlcpy(ifp->if_xname, DEVNAME(sc), IFNAMSIZ);
-	ifq_set_maxlen(&ifp->if_snd, 1);
+	ifq_init_maxlen(&ifp->if_snd, 1);
 
 	/* not yet
 	ifp->if_capabilities = IFCAP_VLAN_MTU;
