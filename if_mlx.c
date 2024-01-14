@@ -504,7 +504,7 @@ mlx_get_device_info(struct mlxc_softc *sc)
 	    betoh16(sc->sc_dev_cap.max_desc_sz_sq), sc->sc_dev_cap.max_sg_sq);
 	printf("receive queue: max entry size %d, sgl size %d\n",
 	    betoh16(sc->sc_dev_cap.max_desc_sz_rq), sc->sc_dev_cap.max_sg_rq);
-	printf("lkey: reserved %08x\n", betoh32(sc->sc_dev_cap.resd_lkey));
+	printf("lkey: reserved %08x\n", betoh32(sc->sc_dev_cap.rsvd_lkey));
 	return 0;
 }
 
