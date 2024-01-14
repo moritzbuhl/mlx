@@ -1,0 +1,344 @@
+---<<BOOT>>---
+Copyright (c) 1992-2023 The FreeBSD Project.
+Copyright (c) 1979, 1980, 1983, 1986, 1988, 1989, 1991, 1992, 1993, 1994
+	The Regents of the University of California. All rights reserved.
+FreeBSD is a registered trademark of The FreeBSD Foundation.
+FreeBSD 14.0-RELEASE #1: Mon Dec 11 15:09:06 CET 2023
+    root@fbsd:/usr/obj/usr/src/amd64.amd64/sys/GENERIC amd64
+FreeBSD clang version 16.0.6 (https://github.com/llvm/llvm-project.git llvmorg-16.0.6-0-g7cbf1a259152)
+VT(efifb): resolution 800x600
+CPU: Intel(R) Celeron(R) N5105 @ 2.00GHz (1996.80-MHz K8-class CPU)
+  Origin="GenuineIntel"  Id=0x906c0  Family=0x6  Model=0x9c  Stepping=0
+  Features=0xbfebfbff<FPU,VME,DE,PSE,TSC,MSR,PAE,MCE,CX8,APIC,SEP,MTRR,PGE,MCA,CMOV,PAT,PSE36,CLFLUSH,DTS,ACPI,MMX,FXSR,SSE,SSE2,SS,HTT,TM,PBE>
+  Features2=0x4ff8ebbf<SSE3,PCLMULQDQ,DTES64,MON,DS_CPL,VMX,EST,TM2,SSSE3,SDBG,CX16,xTPR,PDCM,SSE4.1,SSE4.2,x2APIC,MOVBE,POPCNT,TSCDLT,AESNI,XSAVE,OSXSAVE,RDRAND>
+  AMD Features=0x28100800<SYSCALL,NX,RDTSCP,LM>
+  AMD Features2=0x101<LAHF,Prefetch>
+  Structured Extended Features=0x2394a2c3<FSGSBASE,TSCADJ,FDPEXC,SMEP,ERMS,NFPUSG,PQE,RDSEED,SMAP,CLFLUSHOPT,CLWB,PROCTRACE,SHA>
+  Structured Extended Features2=0x18400124<UMIP,WAITPKG,GFNI,RDPID,MOVDIRI,MOVDIR64B>
+  Structured Extended Features3=0xfc000400<MD_CLEAR,IBPB,STIBP,L1DFL,ARCH_CAP,CORE_CAP,SSBD>
+  XSAVE Features=0xf<XSAVEOPT,XSAVEC,XINUSE,XSAVES>
+  IA32_ARCH_CAPS=0x6b<RDCL_NO,IBRS_ALL,SKIP_L1DFL_VME,MDS_NO>
+  VT-x: PAT,HLT,MTF,PAUSE,EPT,UG,VPID,VID,PostIntr
+  TSC: P-state invariant, performance statistics
+real memory  = 17179869184 (16384 MB)
+avail memory = 16365907968 (15607 MB)
+Event timer "LAPIC" quality 600
+ACPI APIC Table: <ALASKA A M I >
+WARNING: L1 data cache covers fewer APIC IDs than a core (0 < 1)
+FreeBSD/SMP: Multiprocessor System Detected: 4 CPUs
+FreeBSD/SMP: 1 package(s) x 4 core(s)
+random: registering fast source Intel Secure Key RNG
+random: fast provider: "Intel Secure Key RNG"
+random: unblocking device.
+ioapic0 <Version 2.0> irqs 0-119
+Launching APs: 3 1 2
+random: entropy device external interface
+kbd0 at kbdmux0
+efirtc0: <EFI Realtime Clock>
+efirtc0: registered as a time-of-day clock, resolution 1.000000s
+smbios0: <System Management BIOS> at iomem 0x74c7e000-0x74c7e01e
+smbios0: Version: 3.3, BCD Revision: 3.3
+aesni0: <AES-CBC,AES-CCM,AES-GCM,AES-ICM,AES-XTS,SHA1,SHA256>
+acpi0: <ALASKA A M I >
+acpi0: Power Button (fixed)
+cpu0: <ACPI CPU> on acpi0
+hpet0: <High Precision Event Timer> iomem 0xfed00000-0xfed003ff on acpi0
+Timecounter "HPET" frequency 19200000 Hz quality 950
+Event timer "HPET" frequency 19200000 Hz quality 550
+Event timer "HPET1" frequency 19200000 Hz quality 440
+Event timer "HPET2" frequency 19200000 Hz quality 440
+Event timer "HPET3" frequency 19200000 Hz quality 440
+Event timer "HPET4" frequency 19200000 Hz quality 440
+atrtc1: <AT realtime clock> on acpi0
+atrtc1: Warning: Couldn't map I/O.
+atrtc1: registered as a time-of-day clock, resolution 1.000000s
+Event timer "RTC" frequency 32768 Hz quality 0
+attimer0: <AT timer> port 0x40-0x43,0x50-0x53 irq 0 on acpi0
+Timecounter "i8254" frequency 1193182 Hz quality 0
+Event timer "i8254" frequency 1193182 Hz quality 100
+Timecounter "ACPI-fast" frequency 3579545 Hz quality 900
+acpi_timer0: <24-bit timer at 3.579545MHz> port 0x1808-0x180b on acpi0
+pcib0: <ACPI Host-PCI bridge> port 0xcf8-0xcff on acpi0
+pci0: <ACPI PCI bus> on pcib0
+vgapci0: <VGA-compatible display> port 0x3000-0x303f mem 0x6001000000-0x6001ffffff,0x4000000000-0x400fffffff at device 2.0 on pci0
+vgapci0: Boot video device
+xhci0: <XHCI (generic) USB 3.0 controller> mem 0x6002100000-0x600210ffff at device 20.0 on pci0
+xhci0: 32 bytes context size, 64-bit DMA
+usbus0 on xhci0
+usbus0: 5.0Gbps Super Speed USB v3.0
+pci0: <memory, RAM> at device 20.2 (no driver attached)
+pci0: <serial bus> at device 21.0 (no driver attached)
+pci0: <serial bus> at device 21.2 (no driver attached)
+pci0: <simple comms> at device 22.0 (no driver attached)
+pci0: <serial bus> at device 25.0 (no driver attached)
+pci0: <serial bus> at device 25.1 (no driver attached)
+sdhci_pci0: <Generic SD HCI> mem 0x6002119000-0x6002119fff at device 26.0 on pci0
+sdhci_pci0: 1 slot(s) allocated
+mmc0: <MMC/SD bus> on sdhci_pci0
+pcib1: <ACPI PCI-PCI bridge> at device 28.0 on pci0
+pci1: <ACPI PCI bus> on pcib1
+igc0: <Intel(R) Ethernet Controller I225-V> mem 0x80200000-0x802fffff,0x80300000-0x80303fff at device 0.0 on pci1
+igc0: Using 1024 TX descriptors and 1024 RX descriptors
+igc0: Using 4 RX queues 4 TX queues
+igc0: Using MSI-X interrupts with 5 vectors
+igc0: Ethernet address: 00:f0:cb:ee:cd:2f
+igc0: netmap queues/slots: TX 4/1024, RX 4/1024
+pcib2: <ACPI PCI-PCI bridge> at device 28.1 on pci0
+pci2: <ACPI PCI bus> on pcib2
+igc1: <Intel(R) Ethernet Controller I225-V> mem 0x80000000-0x800fffff,0x80100000-0x80103fff at device 0.0 on pci2
+igc1: Using 1024 TX descriptors and 1024 RX descriptors
+igc1: Using 4 RX queues 4 TX queues
+igc1: Using MSI-X interrupts with 5 vectors
+igc1: Ethernet address: 00:f0:cb:ee:cd:30
+igc1: netmap queues/slots: TX 4/1024, RX 4/1024
+pcib3: <ACPI PCI-PCI bridge> at device 28.2 on pci0
+pci3: <ACPI PCI bus> on pcib3
+igc2: <Intel(R) Ethernet Controller I225-V> mem 0x7fe00000-0x7fefffff,0x7ff00000-0x7ff03fff at device 0.0 on pci3
+igc2: Using 1024 TX descriptors and 1024 RX descriptors
+igc2: Using 4 RX queues 4 TX queues
+igc2: Using MSI-X interrupts with 5 vectors
+igc2: Ethernet address: 00:f0:cb:ee:cd:31
+igc2: netmap queues/slots: TX 4/1024, RX 4/1024
+pcib4: <ACPI PCI-PCI bridge> at device 28.3 on pci0
+pci4: <ACPI PCI bus> on pcib4
+nvme0: <Generic NVMe Device> mem 0x80400000-0x80403fff,0x80405000-0x80405fff,0x80404000-0x80404fff at device 0.0 on pci4
+pcib5: <ACPI PCI-PCI bridge> at device 28.4 on pci0
+pci5: <ACPI PCI bus> on pcib5
+pci5: <network, ethernet> at device 0.0 (no driver attached)
+pci0: <simple comms> at device 30.0 (no driver attached)
+pci0: <serial bus> at device 30.3 (no driver attached)
+isab0: <PCI-ISA bridge> at device 31.0 on pci0
+isa0: <ISA bus> on isab0
+hdac0: <Intel Jasper Lake HDA Controller> mem 0x6002110000-0x6002113fff,0x6002000000-0x60020fffff at device 31.3 on pci0
+pci0: <serial bus> at device 31.5 (no driver attached)
+uart2: <16750 or compatible> iomem 0xfe036000-0xfe036007 irq 34 on acpi0
+acpi_button0: <Sleep Button> on acpi0
+acpi_button1: <Power Button> on acpi0
+acpi_tz0: <Thermal Zone> on acpi0
+acpi_syscontainer0: <System Container> on acpi0
+acpi_syscontainer1: <System Container> on acpi0
+atrtc0: <AT realtime clock> at port 0x70 irq 8 on isa0
+atrtc0: Warning: Couldn't map I/O.
+atrtc0: registered as a time-of-day clock, resolution 1.000000s
+atrtc0: Can't map interrupt.
+atrtc0: non-PNP ISA device will be removed from GENERIC in FreeBSD 15.
+hwpstate_intel0: <Intel Speed Shift> on cpu0
+hwpstate_intel1: <Intel Speed Shift> on cpu1
+hwpstate_intel2: <Intel Speed Shift> on cpu2
+hwpstate_intel3: <Intel Speed Shift> on cpu3
+Timecounter "TSC" frequency 1996804117 Hz quality 1000
+Timecounters tick every 1.000 msec
+ugen0.1: <Intel XHCI root HUB> at usbus0
+uhub0 on usbus0
+uhub0: <Intel XHCI root HUB, class 9/0, rev 3.00/1.00, addr 1> on usbus0
+mmcsd0: 125GB <MMCHC SPeMMC 1.0 SN AA0BE307 MFG 03/2022 by 234 0x000e> at mmc0 200.0MHz/8bit/8192-block
+mmcsd0boot0: 4MB partition 1 at mmcsd0
+mmcsd0boot1: 4MB partition 2 at mmcsd0
+mmcsd0rpmb: 4MB partition 3 at mmcsd0
+hdacc0: <Intel Jasper Lake HDA CODEC> at cad 2 on hdac0
+hdaa0: <Intel Jasper Lake Audio Function Group> at nid 1 on hdacc0
+pcm0: <Intel Jasper Lake (HDMI/DP 8ch)> at nid 4 on hdaa0
+nda0 at nvme0 bus 0 scbus0 target 0 lun 1
+nda0: <SK hynix BC711 HFM256GD3JX013N HPS1 CSACN60151350CH49>
+nda0: Serial Number CSACN60151350CH49
+nda0: nvme version 1.3
+nda0: 244198MB (500118192 512 byte sectors)
+Trying to mount root from ufs:/dev/mmcsd0p2 [rw]...
+uhub0: 14 ports with 14 removable, self powered
+ugen0.2: <CHERRY CHERRY Keyboard> at usbus0
+ukbd0 on uhub0
+ukbd0: <CHERRY CHERRY Keyboard, class 0/0, rev 2.00/1.02, addr 1> on usbus0
+kbd1 at ukbd0
+mlx4_core0: <mlx4_core> mem 0x7fd00000-0x7fdfffff,0x6000000000-0x60007fffff at device 0.0 on pci5
+mlx4_core: Mellanox ConnectX core driver v3.7.1 (November 2021)
+mlx4_core: Initializing 0000:05:00.0
+mlx4_core0: pcie_cap_has_lnkctl: type=0
+mlx4_core0: FW version 2.42.5000 (cmd intf rev 3), max commands 16
+mlx4_core0: Catastrophic error buffer at 0x1f020, size 0x10, BAR 0
+mlx4_core0: Communication vector bar:2 offset:0x800
+mlx4_core0: FW size 385 KB
+mlx4_core0: Internal clock bar:0 offset:0x78f50
+mlx4_core0: Clear int @ f0058, BAR 0
+mlx4_core0: Mapped 26 chunks/6168 KB for FW
+mlx4_core0: BlueFlame available (reg size 512, regs/page 8)
+mlx4_core0: Base MM extensions: flags 35538ec2, rsvd L_Key 00008000
+mlx4_core0: Max ICM size 4294967296 MB
+mlx4_core0: Max QPs: 16777216, reserved QPs: 64, entry size: 256
+mlx4_core0: Max SRQs: 16777216, reserved SRQs: 64, entry size: 128
+mlx4_core0: Max CQs: 16777216, reserved CQs: 128, entry size: 128
+mlx4_core0: Num sys EQs: 1024, max EQs: 512, reserved EQs: 8, entry size: 128
+mlx4_core0: reserved MPTs: 256, reserved MTTs: 64
+mlx4_core0: Max PDs: 131072, reserved PDs: 4, reserved UARs: 2
+mlx4_core0: Max QP/MCG: 131072, reserved MGMs: 0
+mlx4_core0: Max CQEs: 4194304, max WQEs: 16384, max SRQ WQEs: 16384
+mlx4_core0: Local CA ACK delay: 15, max MTU: 4096, port width cap: 3
+mlx4_core0: Max SQ desc size: 1008, max SQ S/G: 62
+mlx4_core0: Max RQ desc size: 512, max RQ S/G: 32
+mlx4_core0: Max GSO size: 131072
+mlx4_core0: Max counters: 256
+mlx4_core0: Max RSS Table size: 256
+mlx4_core0: DMFS high rate steer QPn base: 64
+mlx4_core0: DMFS high rate steer QPn range: 254
+mlx4_core0: QP Rate-Limit: #rates 1024, unit/val max 3/40, min 1/512
+mlx4_core0: DEV_CAP flags:
+mlx4_core0:     RC transport
+mlx4_core0:     UC transport
+mlx4_core0:     UD transport
+mlx4_core0:     XRC transport
+mlx4_core0:     SRQ support
+mlx4_core0:     IPoIB checksum offload
+mlx4_core0:     P_Key violation counter
+mlx4_core0:     Q_Key violation counter
+mlx4_core0:     Big LSO headers
+mlx4_core0:     MW support
+mlx4_core0:     APM support
+mlx4_core0:     Atomic ops support
+mlx4_core0:     Address vector port checking support
+mlx4_core0:     UD multicast support
+mlx4_core0:     IBoE support
+mlx4_core0:     Unicast loopback support
+mlx4_core0:     FCS header control
+mlx4_core0:     Wake On LAN (port1) support
+mlx4_core0:     UDP RSS support
+mlx4_core0:     Unicast VEP steering support
+mlx4_core0:     Multicast VEP steering support
+mlx4_core0:     Counters support
+mlx4_core0:     RSS IP fragments support
+mlx4_core0:     Port ETS Scheduler support
+mlx4_core0:     Port link type sensing support
+mlx4_core0:     Port management change event support
+mlx4_core0:     64 byte EQE support
+mlx4_core0:     64 byte CQE support
+mlx4_core0:     RSS support
+mlx4_core0:     RSS Toeplitz Hash Function support
+mlx4_core0:     RSS XOR Hash Function support
+mlx4_core0:     Device managed flow steering support
+mlx4_core0:     Automatic MAC reassignment support
+mlx4_core0:     Time stamping support
+mlx4_core0:     VST (control vlan insertion/stripping) support
+mlx4_core0:     FSM (MAC anti-spoofing) support
+mlx4_core0:     Dynamic QP updates support
+mlx4_core0:     Device managed flow steering IPoIB support
+mlx4_core0:     MAD DEMUX (Secure-Host) support
+mlx4_core0:     Large cache line (>64B) CQE stride support
+mlx4_core0:     Large cache line (>64B) EQE stride support
+mlx4_core0:     Ethernet protocol control support
+mlx4_core0:     Ethernet Backplane autoneg support
+mlx4_core0:     CONFIG DEV support
+mlx4_core0:     Asymmetric EQs support
+mlx4_core0:     More than 80 VFs support
+mlx4_core0:     Recoverable error events support
+mlx4_core0:     Port Remap support
+mlx4_core0:     QCN support
+mlx4_core0:     QP rate limiting support
+mlx4_core0:     Ethernet Flow control statistics support
+mlx4_core0:     Granular QoS per VF support
+mlx4_core0:     Port ETS Scheduler support
+mlx4_core0:     Port beacon support
+mlx4_core0:     RX-ALL support
+mlx4_core0:     802.1ad offload support
+mlx4_core0:     Modifying loopback source checks using UPDATE_QP support
+mlx4_core0:     Loopback source checks support
+mlx4_core0:     DMFS Sniffer support (UC & MC)
+mlx4_core0:     QinQ VST mode support
+mlx4_core0:     sl to vl mapping table change event support
+mlx4_core0: Steering mode is: B0 steering, oper_log_mgm_entry_size = 10, modparam log_num_mgm_entry_size = 10
+mlx4_core0: Tunneling offload mode is: none
+mlx4_core0:   profile[ 0] (  CMPT): 2^26 entries @ 0x         0, size 0x 100000000
+mlx4_core0:   profile[ 1] (RDMARC): 2^22 entries @ 0x 100000000, size 0x   8000000
+mlx4_core0:   profile[ 2] (    QP): 2^18 entries @ 0x 108000000, size 0x   4000000
+mlx4_core0:   profile[ 3] (   MTT): 2^23 entries @ 0x 10c000000, size 0x   4000000
+mlx4_core0:   profile[ 4] (  DMPT): 2^19 entries @ 0x 110000000, size 0x   2000000
+mlx4_core0:   profile[ 5] (  ALTC): 2^18 entries @ 0x 112000000, size 0x   1000000
+mlx4_core0:   profile[ 6] (   SRQ): 2^16 entries @ 0x 113000000, size 0x    800000
+mlx4_core0:   profile[ 7] (    CQ): 2^16 entries @ 0x 113800000, size 0x    800000
+mlx4_core0:   profile[ 8] (   MCG): 2^13 entries @ 0x 114000000, size 0x    800000
+mlx4_core0:   profile[ 9] (  AUXC): 2^18 entries @ 0x 114800000, size 0x     40000
+mlx4_core0:   profile[10] (    EQ): 2^06 entries @ 0x 114840000, size 0x      2000
+mlx4_core0: HCA context memory: reserving 4530440 KB
+mlx4_core0: 4530440 KB of HCA context requires 8984 KB aux memory
+mlx4_core0: Mapped 37 chunks/8984 KB for ICM aux
+mlx4_core0: Mapped 1 chunks/256 KB at 0 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 40000000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 80000000 for ICM
+mlx4_core0: Mapped 1 chunks/64 KB at c0000000 for ICM
+mlx4_core0: Mapped 1 chunks/128 KB at 114840000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 10c000000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 110000000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 108000000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114800000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 112000000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 100000000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 113800000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 113000000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114000000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114040000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114080000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 1140c0000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114100000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114140000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114180000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 1141c0000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114200000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114240000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114280000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 1142c0000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114300000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114340000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114380000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 1143c0000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114400000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114440000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114480000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 1144c0000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114500000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114540000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114580000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 1145c0000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114600000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114640000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114680000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 1146c0000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114700000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114740000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 114780000 for ICM
+mlx4_core0: Mapped 1 chunks/256 KB at 1147c0000 for ICM
+mlx4_core0: Bus: 5, Device: 0, Function: 0, Physical function: 0, Max EQs: 156, Reserved EQs: 28, Reserved UARs: 7
+mlx4_core0: DMFS high rate steer mode is: disabled performance optimized steering
+mlx4_core0: pcie_cap_has_lnkctl: type=0
+mlx4_core0: pcie err1=0 err2=0
+mlx4_core0: lnkcap1=138671235
+mlx4_core0: lnkcap2=14
+mlx4_core0: width=8
+mlx4_core0: Unable to determine PCI device chain minimum BW
+mlx4_core0: PCIe BW is different than device's capability
+mlx4_core0: PCIe link speed is Unknown, device supports 8.0GT/s
+mlx4_core0: PCIe link width is x255, device supports x8
+mlx4_core0: uar_page_shift = 12
+mlx4_core0: Effective reserved_uars=7
+mlx4_core0: SMP firewall set_attribute_mask = 0x0
+mlx4_core0: SMP firewall getresp_attribute_mask = 0x0
+mlx4_core0: SMP firewall trap_attribute_mask = 0x0
+mlx4_core0: SMP firewall traprepress_attribute_mask = 0x0
+mlx4_core0: NOP command IRQ test passed
+mlx4_core0: mlx4_allocate_default_counters: default counter index 0 for port 1
+mlx4_core0: mlx4_allocate_default_counters: default counter index 1 for port 2
+acpi_wmi0: <ACPI-WMI mapping> on acpi0
+acpi_wmi0: cannot find EC device
+acpi_wmi0: Embedded MOF found
+ACPI: \134_SB.WFDE.WQCC: 1 arguments were passed to a non-method ACPI object (Buffer) (20221020/nsarguments-361)
+acpi_wmi1: <ACPI-WMI mapping> on acpi0
+acpi_wmi1: cannot find EC device
+acpi_wmi1: Embedded MOF found
+ACPI: \134_SB.WFTE.WQCC: 1 arguments were passed to a non-method ACPI object (Buffer) (20221020/nsarguments-361)
+igc0: link state changed to UP
+lo0: link state changed to UP
+igc0: link state changed to DOWN
+ums0 on uhub0
+ums0: <CHERRY CHERRY Keyboard, class 0/0, rev 2.00/1.02, addr 1> on usbus0
+ums0: 5 buttons and [XYZT] coordinates ID=5
+igc0: link state changed to UP
+module_register: cannot register pci/mlx from mlx.ko; already loaded from kernel
+Module pci/mlx failed to register: 17
+module_register: cannot register mlx/mlxd from mlx.ko; already loaded from kernel
+Module mlx/mlxd failed to register: 17
